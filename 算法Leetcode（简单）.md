@@ -426,7 +426,27 @@ var addBinary = function(a, b) {
 
 https://leetcode.cn/problems/sqrtx
 ```js
-
+/**
+ * @param {number} x
+ * @return {number}
+ */
+var mySqrt = function(x) {
+  let left = 1;
+  let right = x;
+  let mid = 0;
+  while(left <= right) {
+    let mid = left + Math.floor((right - left)/2);
+    let temp = Math.floor(x / mid);
+    if(temp < mid) {
+      right = mid - 1;
+    } else if(temp > mid) {
+      left = mid + 1;
+    } else if(temp === mid) {
+      return temp;
+    }
+  }
+  return right;
+};
 ```
 
 ## 14.爬楼梯
@@ -438,7 +458,29 @@ https://leetcode.cn/problems/sqrtx
 https://leetcode.cn/problems/climbing-stairs
 
 ```js
-
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var climbStairs = function(n) {
+  	//方法①
+    let dp = [1,2];
+    for(let i = 2; i < n; i++) {
+        dp[i] = dp[i-1] + dp[i-2];
+    }
+    return dp[n-1];
+  
+  	//方法②
+    if(n===1) return 1;
+    if(n===2) return 2;
+    let a = 1,b = 2,temp = 0;
+    for(let i=3; i<=n; i++) {
+       temp = a + b;
+       a = b;
+       b = temp;
+    }
+    return b;
+};
 ```
 
 ## 15.删除链表中的重复元素
@@ -514,6 +556,8 @@ var merge = function(nums1, m, nums2, n) {
 
 给定一个二叉树的根节点 `root` ，返回 *它的 **中序** 遍历* 。
 
+https://leetcode.cn/problems/binary-tree-inorder-traversal
+
 <img src="https://assets.leetcode.com/uploads/2020/09/15/inorder_1.jpg" alt="img" style="zoom:50%;" />
 
 ```js
@@ -551,6 +595,8 @@ var inorderTraversal = function(root) {
 
 如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
 
+https://leetcode.cn/problems/same-tree
+
  ```js
  /**
  * Definition for a binary tree node.
@@ -573,5 +619,54 @@ var inorderTraversal = function(root) {
  };
  ```
 
+## 19.对称二叉树
 
+给你一个二叉树的根节点 `root` ， 检查它是否轴对称。
+
+https://leetcode.cn/problems/symmetric-tree
+
+```js
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+//递归
+var isSymmetric = function(root) {
+  if(root === null) return true;
+  return isChildSymmetric(root.left,root.right);
+}
+function isChildSymmetric(left,right) {
+  if(left === null && right === null) return true;
+  if(left === null || right === null) return false;
+  if(left.val !==  right.val) return false;
+  return isChildSymmetric(left.left,right.right)&&isChildSymmetric(right.left,left.right);
+}
+```
+
+## 20.二叉树的最大深度
+
+给定一个二叉树，找出其最大深度。
+
+二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
+
+**说明:** 叶子节点是指没有子节点的节点。
+
+https://leetcode.cn/problems/maximum-depth-of-binary-tree
+
+```js
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var maxDepth = function(root) {
+  if(root === null) {
+    return 0;
+  } else {
+    let left = maxDepth(root.left);
+    let right = maxDepth(root.right);
+    let depth = 1 + Math.max(left,right);
+    return depth;
+  }
+}
+```
 
