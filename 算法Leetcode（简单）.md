@@ -670,3 +670,54 @@ var maxDepth = function(root) {
 }
 ```
 
+## 21.将有序数组转化为二叉搜索树
+
+给你一个整数数组 nums ，其中元素已经按 升序 排列，请你将其转换为一棵 高度平衡 二叉搜索树。
+
+高度平衡 二叉树是一棵满足「每个节点的左右两个子树的高度差的绝对值不超过 1 」的二叉树。
+
+https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {number[]} nums
+ * @return {TreeNode}
+ */
+
+ //方法① 
+var sortedArrayToBST = function(nums) {
+  if(!nums.length) return null;
+  let rootIndex = Math.floor(nums.length/2);
+  let root = new TreeNode(nums[rootIndex]);
+  let left = rootIndex - 1;
+  let right = rootIndex + 1;
+  if(left >= 0) {
+    root.left = sortedArrayToBST(nums.slice(0,rootIndex));
+  }
+  if(right >= 0) {
+    root.right = sortedArrayToBST(nums.slice(right,nums.length));
+  }
+  return root;
+}
+
+//方法②
+var sortedArrayToBST = function(nums) {
+  return helper(nums,0,nums.length-1);
+}
+var helper = function(nums,left,right) {
+  if(left > right) return null;
+  let mid = Math.floor((left+right)/2);
+  let root = new TreeNode(nums[mid]);
+  root.left = helper(nums,left,mid-1);
+  root.right = helper(nums,mid+1,right);
+  return root;
+}
+```
+
